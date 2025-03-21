@@ -80,7 +80,7 @@ pipeline{
         stage('Kubernetes Deploy') {
           agent { label 'KOPS-SLAVE' }
             steps {
-                    sh "helm install vproifle-stack helm-vprofile/vprofile-helm-charts --set appimage=${registry}:${BUILD_NUMBER} --namespace prod"
+                    sh "helm upgrade --install vproifle-stack helm-vprofile/vprofile-helm-charts --set appimage=${registry}:${BUILD_NUMBER} --namespace prod"
             }
         }
       
