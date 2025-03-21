@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vprormq-deployment
+  labels:
+    deployment: vprormq-dpl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod: vprormq-pod
+  template:
+    metadata:
+      labels:
+        pod: vprormq-pod
+    spec:
+      containers:
+        - name: vprormq01
+          image: rabbitmq
+          env:
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: vproapp-secrets
+                  key: RABBITMQ_DEFAULT_PASS
+          ports:
+            - name: vprormq-port
+              containerPort: 5672
+
+      

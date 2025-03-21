@@ -1,0 +1,55 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vprodb-dpl
+  labels:
+    deployment: vprodb-dpl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod: vprodb-pod
+  template:
+    metadata:
+      labels:
+        pod: vprodb-pod
+    spec:
+      containers:
+        - name: vprodb01
+          image: prajwalgouthammp/vprofile-db-image
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: vproapp-secrets
+                  key: MYSQL_ROOT_PASSWORD
+          ports:
+            - name: vprodb-port
+              containerPort: 3306
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: vprodb-data
+      volumes:
+        - name: vprodb-data
+          persistentVolumeClaim:
+            claimName: vprodb-pvc
+
+      initContainers:
+        - name: busybox
+          image: busybox:latest
+          args: ["rm", "-rf", "/var/lib/mysql/lost+found"]
+          volumeMounts:
+            - name: vprodb-data
+              mountPath: /var/lib/mysql
+
+
+
+
+
+
+
+
+
+
+
