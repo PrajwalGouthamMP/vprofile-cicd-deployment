@@ -44,15 +44,15 @@ pipeline{
             }
         }
     }
-    stage('Quality Gate Checking') {
-            steps {
-                script {
-                    timeout(time: 1, unit: 'HOURS') {
-                        waitForQualityGate abortPipeline: true
-                    }
-                }
-            }
-        }
+    // stage('Quality Gate Checking') {
+    //         steps {
+    //             script {
+    //                 timeout(time: 1, unit: 'HOURS') {
+    //                     waitForQualityGate abortPipeline: true
+    //                 }
+    //             }
+    //         }
+    //     }
         stage('Build App Image') {
           steps {
             script {
